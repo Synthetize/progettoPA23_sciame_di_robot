@@ -22,12 +22,12 @@ public class Controller<R extends RobotInterface, S extends ShapeInterface> {
 
 
     ConfigurationParserInterface<R,S> configParser;
-    ProgramParserInterface programParser;
+    ProgramParserInterface<R,S>  programParser;
     EnvironmentInterface<R,S> environment;
 
 
 
-    public Controller(ConfigurationParserInterface<R,S> configurationParserInterface, ProgramParserInterface programParserInterface) {
+    public Controller(ConfigurationParserInterface<R,S> configurationParserInterface, ProgramParserInterface<R,S> programParserInterface) {
         this.configParser = configurationParserInterface;
         this.programParser = programParserInterface;
         this.programList = new ArrayList<>();
@@ -35,9 +35,9 @@ public class Controller<R extends RobotInterface, S extends ShapeInterface> {
 
 
     public static Controller<RobotInterface, ShapeInterface> getController(){
-        ParserHandler handler = new ParserHandler();
+        ParserHandler<RobotInterface,ShapeInterface> handler = new ParserHandler<>();
         FollowMeParser parser = new FollowMeParser(handler);
-        return new Controller<>(new Environment<>(parser),new Program(parser,handler));
+        return new Controller<>(new Environment<>(parser),new Program<>(parser,handler));
     }
 
     public void initializeEnvironment(HashMap<R, Coordinates> robotCoordinatesHashMap, String env_confPath) {
@@ -50,19 +50,17 @@ public class Controller<R extends RobotInterface, S extends ShapeInterface> {
 
 
 
-    private void initializeExecution(ArrayList<ProgramCommand> program) {
+    private void initializeExecution(ArrayList<ProgramCommand<R,S>> program) {
         System.out.println(environment.getRobot());
         environment.getRobot().keySet().forEach(key -> {
-            programList.add(new ExecuteProgram<>(key, new ArrayList<>(program)));
+            programList.add(new ExecuteProgram<>(key, new ArrayList<>(program), environment));
         });
     }
 
 
     public void executeProgram(int numberOfExecutions) {
         for (int i = 0; i < numberOfExecutions; i++) {
-            programList.forEach(program -> {
-                program.execute(environment);
-            });
+            programList.forEach(ExecuteProgram::execute);
         }
     }
 

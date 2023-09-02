@@ -7,5 +7,6 @@ import java.util.ArrayList;
 
 public interface RobotInterface {
     int getRobotId();
-
+    ArrayList<String> getCurrentLabels();
+    void addLabel(String label);
 }

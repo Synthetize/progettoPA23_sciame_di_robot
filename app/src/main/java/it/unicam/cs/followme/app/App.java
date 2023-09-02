@@ -18,7 +18,7 @@ public class App {
         Controller<RobotInterface, ShapeInterface> controller = Controller.getController();
         controller.initializeEnvironment(RobotsHandler.addRobotAtChosenPosition(), env_confPath);
         controller.initializeProgram(robotProgramPath);
-        controller.executeProgram(4);
+        controller.executeProgram(15);
 
 //        System.out.println("SHAPE POSITIONS:");
 //        for (Shape s : environment.getShapes()) {

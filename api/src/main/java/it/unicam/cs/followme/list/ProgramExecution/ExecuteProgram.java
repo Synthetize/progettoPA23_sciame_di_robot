@@ -8,34 +8,40 @@ import it.unicam.cs.followme.list.Model.ProgramCommand;
 import java.util.ArrayList;
 
 
-public class ExecuteProgram<R extends RobotInterface,S extends ShapeInterface> {
+public class ExecuteProgram<R extends RobotInterface, S extends ShapeInterface> {
     private int commandIndex;
     private R robot;
     private ExecuteBasicCommands basicCommand;
-    private ExecuteLoopsCommands loopCommand;
 
-    private ArrayList<ProgramCommand> programList;
+    private ArrayList<ProgramCommand<R, S>> programList;
 
-    public ExecuteProgram(R robot, ArrayList<ProgramCommand> programList) {
+    private ArrayList<Integer> startLoopIndex = new ArrayList<>();
+    private int repeatCounter;
+    private boolean doForever = false;
+
+    private EnvironmentInterface<R, S> env;
+
+    public ExecuteProgram(R robot, ArrayList<ProgramCommand<R, S>> programList, EnvironmentInterface<R, S> env) {
         this.commandIndex = 0;
         this.robot = robot;
         basicCommand = new ExecuteBasicCommands();
+        //loopCommand = new ExecuteLoopsCommands(programList);
         this.programList = programList;
-        //loopCommand = new ExecuteLoopsCommands();
+        this.env = env;
     }
 
-    public void execute(EnvironmentInterface<R,S> env) {
+    public void execute() {
         if (commandIndex >= programList.size())
             stopExecution();
         else if (!findLoop())
             executeBasicComand();
         else
             executeLoop();
-
     }
 
     private boolean findLoop() {
         String command = programList.get(commandIndex).getCommand();
+        //System.out.println(command + " " + commandIndex);
         switch (command) {
             case "REPEAT", "UNTIL", "DO FOREVER", "DONE" -> {
                 return true;
@@ -46,13 +52,13 @@ public class ExecuteProgram<R extends RobotInterface,S extends ShapeInterface> {
         }
     }
 
-    private void executeBasicComand() {
-        ProgramCommand command = programList.get(commandIndex);
-       // System.out.println("Executing command " + commandIndex);
+    public void executeBasicComand() {
+        ProgramCommand<R, S> command = programList.get(commandIndex);
         switch (command.getCommand()) {
             case "MOVE" -> {
                 double[] args = command.getArgs();
                 basicCommand.move(args[0], args[1], args[2]);
+
             }
             case "MOVE RANDOM" -> {
                 double[] args = command.getArgs();
@@ -82,24 +88,27 @@ public class ExecuteProgram<R extends RobotInterface,S extends ShapeInterface> {
             }
         }
         commandIndex++;
+
     }
 
     private void executeLoop() {
-//        String command = programList.get(commandIndex).getCommand();
-//        switch (command) {
-//            case "REPEAT" -> {
-//                loopCommand.repeat(commandIndex);}
-//            case "UNTIL" -> {
-//
-//            }
-//            case "DO FOREVER" -> {
-//                loopCommand.forever(commandIndex);}
-//            case "DONE" -> {
-//                commandIndex++;
-//                execute();
-//            }
-//        }
+        ProgramCommand<R, S> command = programList.get(commandIndex);
+        switch (command.getCommand()) {
+            case "REPEAT", "DO FOREVER", "UNTIL" -> {
+                if (command.getLoop().conditionState(env, robot)) {
+                    commandIndex = command.getLoop().getJmp();
+                } else {
+                    commandIndex++;
+                    execute();
+                }
+            }
+            case "DONE" -> {
+                commandIndex = command.getLoop().getJmp();
+                execute();
+            }
+        }
     }
+
 
     private void stopExecution() {
         System.out.println("Execution stopped");
@@ -107,4 +116,7 @@ public class ExecuteProgram<R extends RobotInterface,S extends ShapeInterface> {
     }
 
 
+    public void setProgramList(ArrayList<ProgramCommand<R, S>> repeatList) {
+        this.programList = repeatList;
+    }
 }

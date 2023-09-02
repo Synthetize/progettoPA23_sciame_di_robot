@@ -5,9 +5,9 @@ import it.unicam.cs.followme.list.Interfaces.ShapeInterface;
 import it.unicam.cs.followme.utilities.ShapeData;
 
 public class CircleShape implements ShapeInterface {
-    private String label;
-    private Coordinates coordinates;
-    private double radius;
+    private final String label;
+    private final Coordinates coordinates;
+    private final double radius;
 
     public CircleShape(String label, double[] args) {
         this.label = label;
@@ -32,6 +32,11 @@ public class CircleShape implements ShapeInterface {
 
     public String toString() {
         return "Circle " + this.label + " with radius " + this.radius + " at coordinates " + this.coordinates;
+    }
+
+    public boolean isTheRobotInsideTheShape(Coordinates robotCoordinates) {
+        double distance = Math.sqrt(Math.pow(robotCoordinates.getX() - this.coordinates.getX(), 2) + Math.pow(robotCoordinates.getY() - this.coordinates.getY(), 2));
+        return distance <= this.radius;
     }
 
 }

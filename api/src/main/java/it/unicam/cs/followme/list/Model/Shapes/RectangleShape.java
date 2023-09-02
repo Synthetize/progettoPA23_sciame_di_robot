@@ -6,10 +6,10 @@ import it.unicam.cs.followme.utilities.ShapeData;
 
 public class RectangleShape implements ShapeInterface {
 
-        private String label;
-        private Coordinates coordinates;
-        private double width;
-        private double height;
+        private final String label;
+        private final Coordinates coordinates;
+        private final double width;
+        private final double height;
 
         public RectangleShape(String label, double[] args) {
             this.label = label;
@@ -34,5 +34,18 @@ public class RectangleShape implements ShapeInterface {
         public String toString() {
             return "Rectangle " + this.label + " with width " + this.width + " and height " + this.height + " at coordinates " + this.coordinates;
         }
+
+        //check if the robot is inside the shape by checking if the robot's coordinates are inside the rectangle coordinates knowing the width and the height and the center
+    public boolean isTheRobotInsideTheShape(Coordinates robotCoordinates) {
+            double topLeftAngleX = coordinates.getX() - width / 2;
+            double topLeftAngleY = coordinates.getY() + height / 2;
+//            double topRightAngleX = coordinates.getX() + width / 2;
+//            double topRightAngleY = coordinates.getY() + height / 2;
+//            double bottomLeftAngleX = coordinates.getX() - width / 2;
+//            double bottomLeftAngleY = coordinates.getY() - height / 2;
+            double bottomRightAngleX = coordinates.getX() + width / 2;
+            double bottomRightAngleY = coordinates.getY() - height / 2;
+        return topLeftAngleX <= robotCoordinates.getX() && robotCoordinates.getX() <= bottomRightAngleX && bottomRightAngleY <= robotCoordinates.getY() && robotCoordinates.getY() <= topLeftAngleY;
+    }
 
 }

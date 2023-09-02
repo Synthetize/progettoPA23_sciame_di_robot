@@ -12,7 +12,7 @@ public class RobotsHandler  {
     }
 
     static public HashMap<RobotInterface, Coordinates> addRobotAtChosenPosition() {
-        int numberOfRobots = 4; //add controller
+        int numberOfRobots = 1; //add controller
         HashMap<RobotInterface, Coordinates> robotPositions = new HashMap<>();
         for (int i = 0; i < numberOfRobots; i++) {
             //add coordinates input

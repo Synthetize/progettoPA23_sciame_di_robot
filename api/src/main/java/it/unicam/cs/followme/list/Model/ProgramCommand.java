@@ -1,11 +1,19 @@
 package it.unicam.cs.followme.list.Model;
 
+import it.unicam.cs.followme.list.Interfaces.RobotInterface;
+import it.unicam.cs.followme.list.Interfaces.ShapeInterface;
+import it.unicam.cs.followme.list.ProgramExecution.ExecuteLoopsCommand;
+import it.unicam.cs.followme.list.ProgramExecution.ExecuteRepeatCommand;
 import it.unicam.cs.followme.utilities.RobotCommand;
 
-public class ProgramCommand {
+public class ProgramCommand<R extends RobotInterface, S extends ShapeInterface> {
     private String command;
     private double[] args;
     private String label;
+
+    private ExecuteLoopsCommand<R,S> loop;
+
+    
 
     int repeat;
 
@@ -25,14 +33,14 @@ public class ProgramCommand {
         this.args = args;
     }
 
-    public ProgramCommand(String comm, int n) {
+    public ProgramCommand(String comm, ExecuteLoopsCommand<R,S> loop) {
         this.command = comm;
-        this.repeat = n;
+        this.loop = loop;
     }
 
     @Override
     public String toString() {
-        return this.command + " " + this.label + " " + this.args;
+        return this.command;
     }
 
     public String getCommand() {
@@ -47,7 +55,11 @@ public class ProgramCommand {
         return this.args;
     }
 
-    public int getRepeat() {
+    public int getNumberOfRepetitions() {
         return this.repeat;
+    }
+
+    public ExecuteLoopsCommand<R, S> getLoop(){
+        return this.loop;
     }
 }
