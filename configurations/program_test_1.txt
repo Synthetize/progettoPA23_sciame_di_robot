@@ -1,0 +1,14 @@
+DO FOREVER
+UNTIL C1_
+    UNTIL C1_
+        MOVE 100 0 25
+    DONE
+    SIGNAL C1_
+DONE
+UNTIL R1_
+    UNTIL R1_
+        MOVE -100 0 25
+    DONE
+    SIGNAL R1_
+DONE
+DONE
