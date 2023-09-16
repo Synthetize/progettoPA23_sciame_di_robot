@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="717.0" prefWidth="1064.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unicam.cs.followme.app.simulationAreaView">
+   <children>
+      <Button fx:id="nextStep" layoutX="837.0" layoutY="662.0" mnemonicParsing="false" onAction="#executeNextStep" text="Next Step" />
+      <Pane fx:id="environmentArea" layoutX="14.0" layoutY="14.0" opacity="0.37" prefHeight="686.0" prefWidth="775.0" style="-fx-background-color: gray;" />
+      <ScrollPane layoutX="810.0" layoutY="18.0" prefHeight="554.0" prefWidth="233.0">
+         <content>
+            <TextFlow fx:id="logArea" prefHeight="588.0" prefWidth="229.0" />
+         </content>
+      </ScrollPane>
+      <TextField fx:id="repeatNumber" layoutX="951.0" layoutY="662.0" prefHeight="25.0" prefWidth="68.0" />
+      <Label layoutX="941.0" layoutY="633.0" text="Number of steps" />
+   </children>
+</AnchorPane>

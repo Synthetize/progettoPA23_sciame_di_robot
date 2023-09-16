@@ -1,38 +1,32 @@
 package it.unicam.cs.followme.app;
-import it.unicam.cs.followme.list.Controller.Controller;
-import it.unicam.cs.followme.list.Interfaces.RobotInterface;
-import it.unicam.cs.followme.list.Interfaces.ShapeInterface;
-import it.unicam.cs.followme.list.Handlers.RobotsHandler;
 
-public class App {
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+import java.util.Objects;
+
+import static javafx.application.Application.launch;
+
+
+public class App extends Application {
     public static void main(String[] args) {
+        launch(args);
+    }
 
-
-
-//        for(ProgramCommand p : programParser.parseProgram(robotProgramPath)){
-//            System.out.println(p.toString());
-//        }
-        String env_confPath = "configurations/environment_configs.txt";
-        String robotProgramPath = "configurations/program.txt";
-
-        Controller<RobotInterface, ShapeInterface> controller = Controller.getController();
-        controller.initializeEnvironment(RobotsHandler.addRobotAtChosenPosition(), env_confPath);
-        controller.initializeProgram(robotProgramPath);
-        controller.executeProgram(15);
-
-//        System.out.println("SHAPE POSITIONS:");
-//        for (Shape s : environment.getShapes()) {
-//            System.out.println(s.toString()+"\n");
-//        }
-//        System.out.println("Robots positions");
-//        for (Robot r : environment.getRobotPositions().keySet()) {
-//            System.out.println("-----------------------------------------------------------");
-//            System.out.println(r.toString());
-//            System.out.println(environment.getRobotPositions().get(r).toString());
-//            System.out.println(r.getProgramList());
-//        }
-
-
-        
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        try {
+            System.out.println(getClass().getClassLoader().getResource("App.fxml"));
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("App.fxml")));
+            Scene scene = new Scene(root);
+            primaryStage.setScene(scene);
+            primaryStage.setTitle("Configurations");
+            primaryStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

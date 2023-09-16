@@ -1,21 +1,17 @@
 package it.unicam.cs.followme.list.Model;
 
+import it.unicam.cs.followme.list.Interfaces.ProgramCommandInterface;
 import it.unicam.cs.followme.list.Interfaces.RobotInterface;
 import it.unicam.cs.followme.list.Interfaces.ShapeInterface;
-import it.unicam.cs.followme.list.ProgramExecution.ExecuteLoopsCommand;
-import it.unicam.cs.followme.list.ProgramExecution.ExecuteRepeatCommand;
-import it.unicam.cs.followme.utilities.RobotCommand;
+import it.unicam.cs.followme.list.Interfaces.ExecuteLoopsCommand;
 
-public class ProgramCommand<R extends RobotInterface, S extends ShapeInterface> {
+public class ProgramCommand<R extends RobotInterface, S extends ShapeInterface> implements ProgramCommandInterface<R, S> {
     private String command;
     private double[] args;
     private String label;
 
     private ExecuteLoopsCommand<R,S> loop;
 
-    
-
-    int repeat;
 
     public ProgramCommand(String comm, double[] args) {
         this.command = comm;
@@ -28,8 +24,7 @@ public class ProgramCommand<R extends RobotInterface, S extends ShapeInterface> 
     }
 
     public ProgramCommand(String comm, String label, double[] args) {
-        this.command = comm;
-        this.label = label;
+        this(comm,label);
         this.args = args;
     }
 
@@ -42,23 +37,19 @@ public class ProgramCommand<R extends RobotInterface, S extends ShapeInterface> 
     public String toString() {
         return this.command;
     }
-
+    @Override
     public String getCommand() {
         return this.command;
     }
-
+    @Override
     public String getLabel() {
         return this.label;
     }
-
+    @Override
     public double[] getArgs() {
         return this.args;
     }
-
-    public int getNumberOfRepetitions() {
-        return this.repeat;
-    }
-
+    @Override
     public ExecuteLoopsCommand<R, S> getLoop(){
         return this.loop;
     }

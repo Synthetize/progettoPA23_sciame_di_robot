@@ -18,10 +18,6 @@ public class CircleShape implements ShapeInterface {
         this(shapeData.label(), shapeData.args());
     }
 
-    public double calculateArea() {
-        return Math.PI * Math.pow(this.radius, 2);
-    }
-
     public String getLabel() {
         return this.label;
     }
@@ -30,10 +26,14 @@ public class CircleShape implements ShapeInterface {
         return this.coordinates;
     }
 
+    public double getRadius() {
+        return radius;
+    }
+
     public String toString() {
         return "Circle " + this.label + " with radius " + this.radius + " at coordinates " + this.coordinates;
     }
-
+    @Override
     public boolean isTheRobotInsideTheShape(Coordinates robotCoordinates) {
         double distance = Math.sqrt(Math.pow(robotCoordinates.getX() - this.coordinates.getX(), 2) + Math.pow(robotCoordinates.getY() - this.coordinates.getY(), 2));
         return distance <= this.radius;

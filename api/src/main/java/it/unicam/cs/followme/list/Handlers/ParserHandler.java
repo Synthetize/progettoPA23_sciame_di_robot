@@ -4,25 +4,21 @@ import it.unicam.cs.followme.list.Interfaces.RobotInterface;
 import it.unicam.cs.followme.list.Interfaces.ShapeInterface;
 import it.unicam.cs.followme.list.Model.ProgramCommand;
 import it.unicam.cs.followme.list.ProgramExecution.ExecuteDoneCommand;
-import it.unicam.cs.followme.list.ProgramExecution.ExecuteLoopsCommand;
 import it.unicam.cs.followme.list.ProgramExecution.ExecuteRepeatCommand;
 import it.unicam.cs.followme.list.ProgramExecution.ExecuteUntilCommand;
 import it.unicam.cs.followme.utilities.FollowMeParserHandler;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Stack;
 
 public class ParserHandler<R extends RobotInterface, S extends ShapeInterface> implements FollowMeParserHandler {
     private ArrayList<ProgramCommand<R,S>> program;
-    private Stack<Integer> loopStack; ;
+    private Stack<Integer> loopIndexStack;
 
     @Override
     public void parsingStarted() {
         program = new ArrayList<>();
-        loopStack = new Stack<>();
+        loopIndexStack = new Stack<>();
 
     }
 
@@ -67,33 +63,36 @@ public class ParserHandler<R extends RobotInterface, S extends ShapeInterface> i
 
     @Override
     public void continueCommand(int s) {
+        ExecuteRepeatCommand<R,S> continueCommand = new ExecuteRepeatCommand<>(s);
+        program.add(new ProgramCommand<>("CONTINUE", continueCommand));
+        continueCommand.setIndexToJump(program.size()-1);
 
     }
 
     @Override
     public void repeatCommandStart(int numberOfRepetitions) {
         program.add(new ProgramCommand<>("REPEAT", new ExecuteRepeatCommand<>(numberOfRepetitions)));
-        loopStack.push(program.size()-1);
+        loopIndexStack.push(program.size()-1);
     }
 
     @Override
     public void untilCommandStart(String label) {
         program.add(new ProgramCommand<>("UNTIL", new ExecuteUntilCommand<>(label)));
-        loopStack.push(program.size()-1);
+        loopIndexStack.push(program.size()-1);
     }
 
     @Override
     public void doForeverStart() {
         program.add(new ProgramCommand<>("REPEAT", new ExecuteRepeatCommand<>(-1)));
-        loopStack.push(program.size()-1);
+        loopIndexStack.push(program.size()-1);
     }
 
     @Override
     public void doneCommand() {
         ExecuteDoneCommand<R, S> doneCommand = new ExecuteDoneCommand<>();
         program.add(new ProgramCommand<>("DONE", doneCommand));
-        doneCommand.setJmp(loopStack.pop());
-        program.get(doneCommand.getJmp()).getLoop().setJmp(program.size());
+        doneCommand.setIndexToJump(loopIndexStack.pop());
+        program.get(doneCommand.getIndexToJump()).getLoop().setIndexToJump(program.size());
     }
 
     public ArrayList<ProgramCommand<R,S>> getProgram() {

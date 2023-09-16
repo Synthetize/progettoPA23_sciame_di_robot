@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="383.0" prefWidth="375.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unicam.cs.followme.app.configurationView">
+   <children>
+      <Button fx:id="program_button" layoutX="55.0" layoutY="98.0" mnemonicParsing="false" onAction="#loadProgram" text="Program File" />
+      <Button fx:id="env_button" layoutX="52.0" layoutY="50.0" mnemonicParsing="false" onAction="#loadEnvironment" prefHeight="25.0" prefWidth="88.0" text="Shape File" />
+      <Button fx:id="add_Robot" layoutX="34.0" layoutY="252.0" mnemonicParsing="false" onAction="#addRobot" prefHeight="25.0" prefWidth="51.0" text="Add Robot" />
+      <Label layoutX="46.0" layoutY="192.0" text="Robot Coordinates" />
+      <TextField fx:id="text_Box_1" layoutX="34.0" layoutY="215.0" prefHeight="25.0" prefWidth="57.0" />
+      <TextField fx:id="text_Box_2" layoutX="99.0" layoutY="215.0" prefHeight="25.0" prefWidth="57.0" />
+      <Button fx:id="random_Button" layoutX="99.0" layoutY="252.0" mnemonicParsing="false" onAction="#generateCoordinates" prefHeight="25.0" prefWidth="51.0" text="Generate" />
+      <TextArea fx:id="robotTextArea" layoutX="170.0" layoutY="32.0" prefHeight="320.0" prefWidth="187.0" />
+      <Label layoutX="237.0" layoutY="14.0" text="Robot List" />
+      <Button fx:id="loadSettinga" layoutX="47.0" layoutY="313.0" mnemonicParsing="false" onAction="#loadSettings" text="Load Settings" />
+   </children>
+</AnchorPane>

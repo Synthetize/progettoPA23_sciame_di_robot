@@ -1,6 +1,5 @@
 package it.unicam.cs.followme.list.Configuration;
-
-import it.unicam.cs.followme.list.Interfaces.ConfigurationParserInterface;
+import it.unicam.cs.followme.list.Interfaces.EnvironmentGeneratorInterface;
 import it.unicam.cs.followme.list.Interfaces.EnvironmentInterface;
 import it.unicam.cs.followme.list.Interfaces.RobotInterface;
 import it.unicam.cs.followme.list.Interfaces.ShapeInterface;
@@ -17,14 +16,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class Environment<R extends RobotInterface> implements ConfigurationParserInterface<R,ShapeInterface> {
-    private FollowMeParser parser;
+public class EnvironmentGenerator<R extends RobotInterface> implements EnvironmentGeneratorInterface<R,ShapeInterface> {
+    private final FollowMeParser parser;
 
-    public Environment(FollowMeParser parser) {
+    public EnvironmentGenerator(FollowMeParser parser) {
         this.parser = parser;
     }
-
-    private ArrayList<ShapeInterface> parseEnvConfig(String path) {
+    @Override
+    public ArrayList<ShapeInterface> parseEnvConfig(String path) {
         try {
             ArrayList<ShapeInterface> shapesList = new ArrayList<>();
             File env_conf = new File(path);
